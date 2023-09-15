@@ -104,7 +104,7 @@ process deseq2Analysis {
 */
 workflow {
     fastqc(chRawReads)
-    //trimGalore(chRawReads)
+    trimGalore(chRawReads)
    //starAlignment(fastq_files)
    // rsemQuantification(starAlignment.out.bam)
    // deseq2Analysis(rsemQuantification.out.results, params.conditions)
