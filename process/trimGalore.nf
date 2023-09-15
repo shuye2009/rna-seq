@@ -7,7 +7,7 @@ process trimGalore {
   tag "${meta.id}"
   label 'trimGalore'
   label 'medCpu'
-  label 'lowMem'
+  label 'medMem'
 
   input:
   tuple val(meta), path(reads)
