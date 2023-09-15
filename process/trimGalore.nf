@@ -7,7 +7,7 @@ process trimGalore {
   tag "${meta.id}"
   label 'trimGalore'
   label 'medCpu'
-  label 'medMem'
+  label 'lowMem'
 
   input:
   tuple val(meta), path(reads)
@@ -27,20 +27,20 @@ process trimGalore {
   if (meta.singleEnd) {
   """
   [ ! -f  ${prefix}.fastq.gz ] && ln -s $reads ${prefix}.fastq.gz
-  trim-galore \
+  trim_galore \
     $args \
     --cores ${task.cpus} \
     --basename ${prefix} \
     --gzip \
     ${prefix}.fastq.gz 2> ${prefix}_trimgalore.log
   mv ${prefix}_trimmed.fq.gz ${prefix}_trimmed.fastq.gz
-  echo "trim-galore "\$(trim-galore --version 2>&1 | grep version | sed 's/^.*version //; s/Last.*\$//') > versions.txt
+  echo "trim-galore "\$(trim_galore --version 2>&1 | grep version | sed 's/^.*version //; s/Last.*\$//') > versions.txt
   """
   }else{
   """
   [ ! -f  ${prefix}_1.fastq.gz ] && ln -s ${reads[0]} ${prefix}_1.fastq.gz
   [ ! -f  ${prefix}_2.fastq.gz ] && ln -s ${reads[1]} ${prefix}_2.fastq.gz
-  trim-galore \
+  trim_galore \
     $args \
     --cores ${task.cpus} \
     --basename ${prefix} \
@@ -49,7 +49,7 @@ process trimGalore {
     ${prefix}_1.fastq.gz ${prefix}_2.fastq.gz 2> ${prefix}_trimgalore.log
   mv ${prefix}_val_1.fq.gz ${prefix}_trimmed_R1.fastq.gz
   mv ${prefix}_val_2.fq.gz ${prefix}_trimmed_R2.fastq.gz
-  echo "trim-galore "\$(trim-galore --version 2>&1 | grep version | sed 's/^.*version //; s/Last.*\$//') > versions.txt 
+  echo "trim-galore "\$(trim_galore --version 2>&1 | grep version | sed 's/^.*version //; s/Last.*\$//') > versions.txt 
   """
   }
 }

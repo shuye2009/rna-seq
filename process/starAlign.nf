@@ -5,8 +5,8 @@
 process starAlign {
   tag "$meta.id"
   label 'star'
-  label 'highCpu'
-  label 'extraMem'
+  label 'medCpu'
+  label 'lowMem'
 
   input:
   tuple val(meta), path(reads)
@@ -36,8 +36,8 @@ process starAlign {
        --runMode alignReads \\
        --outSAMtype BAM Unsorted  \\
        --readFilesCommand zcat \\
+       --outTmpDir "${params.tmpDir}/star_\$(date +%d%s%S%N)" \\
        --runDirPerm All_RWX \\
-       --outTmpDir "${params.tmpDir}/star_\$(date +%d%s%S%N)"\\
        --outFileNamePrefix $meta.id  \\
        --outSAMattrRGline ID:$meta.id SM:$meta.id LB:Illumina PL:Illumina  \\
        --outSAMunmapped Within \\
