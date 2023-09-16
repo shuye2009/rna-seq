@@ -23,6 +23,13 @@ chRawReads  = Channel
                    }
             }
             .view()
+
+chStarIndex = Channel
+              .fromPath(params.genomeDir)
+              .view()
+chGtf       = Channel
+              .fromPath(params.gtf)
+              .view()
   
 /*          
 ==================================
@@ -105,7 +112,8 @@ process deseq2Analysis {
 workflow {
     fastqc(chRawReads)
     trimGalore(chRawReads)
-    starAlign(trimGalore.out.fastq, params.genomeDir, params.gtf)
+    chTrimmed = trimGalore.out.fastq 
+    starAlign(chTrimmed, chStarIndex, chGtf)
    // rsemQuantification(starAlignment.out.bam)
    // deseq2Analysis(rsemQuantification.out.results, params.conditions)
 }
