@@ -25,10 +25,10 @@ chRawReads  = Channel
             .view()
 
 chStarIndex = Channel
-              .fromPath(params.genomeDir)
+              .value(params.genomeDir)
               .view()
 chGtf       = Channel
-              .fromPath(params.gtf)
+              .value(params.gtf)
               .view()
   
 /*          

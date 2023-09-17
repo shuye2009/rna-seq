@@ -10,8 +10,8 @@ process starAlign {
 
   input:
   tuple val(meta), path(reads)
-  path index
-  path gtf
+  val index
+  val gtf
 
   output:
   tuple val(meta), path('*Aligned.out.bam'), emit: bam
