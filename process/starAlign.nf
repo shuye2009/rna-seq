@@ -6,7 +6,7 @@ process starAlign {
   tag "$meta.id"
   label 'star'
   label 'medCpu'
-  label 'medMem'
+  label 'extraMem'
 
   input:
   tuple val(meta), path(reads)
