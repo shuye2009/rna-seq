@@ -17,14 +17,16 @@ process rsem {
     tuple val(meta), path("*.isoforms.results"), emit: isoformResults
     path ("versions.txt"), emit: versions
 
-    script:
+    when:
+    task.ext.when == null || task.ext.when
 
+    script:
     def op = meta.singleEnd? : "--paired-end"
+
     """
-    
     echo \$(rsem-calculate-expression --version 2>&1) > versions.txt
 
-    rsem-calculate-expression $op \
+    rsem-calculate-expression -p ${task.cpus} \
 			--alignments \
 			--estimate-rspd \
 			--append-names \
@@ -32,7 +34,8 @@ process rsem {
 			--strandedness $params.stranded \
 			$txBam\
 			$params.rsemRef \
-			$meta.id 
+			$meta.id \
+            $op \
 
     """
 }
