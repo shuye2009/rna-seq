@@ -21,6 +21,7 @@ chSRA       = Channel
                    }
             }
             .view()
+
 chRawReads  = Channel
             .fromFilePairs(params.reads, size: params.singleEnd ? 1 : 2)
             .ifEmpty { "Cannot find any reads matching: ${params.reads}\nNB: Path needs to be enclosed in quotes!\nNB: Path requires at least one * wildcard!\nIf this is single-end data, please specify --singleEnd on the command line." }
@@ -124,12 +125,14 @@ process deseq2Analysis {
 }
 */
 workflow {
+  /*
     fastqc(chRawReads)
     trimGalore(chRawReads)
     chTrimmed = trimGalore.out.fastq 
     starAlign(chTrimmed, chStarIndex, chGtf)
     chTxBam = starAlign.out.transcriptsBam
     rsem(chTxBam)
-   // deseq2Analysis(rsemQuantification.out.results, params.conditions)
+   //deseq2Analysis(rsemQuantification.out.results, params.conditions)
+   */
 }
 
