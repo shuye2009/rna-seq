@@ -9,7 +9,18 @@
 */
 if(params.SRAids){
   chRawReads   = Channel
-              .fromSRA( ['SRP073307'], apiKey: params.ncbi_api_key )
+              .fromSRA( parms.SRAids, apiKey: params.ncbi_api_key )
+              .map { row ->
+                  def meta = [:]
+                    meta.id = row[0]
+                    if (params.singleEnd) {
+                      meta.singleEnd = true
+                      return [meta, [row[1][0]]]
+                    }else{
+                      meta.singleEnd = false
+                      return [meta, [row[1][0], row[1][1]]]
+                    }
+              }
               .view()
 } else if(params.reads){
   chRawReads  = Channel
