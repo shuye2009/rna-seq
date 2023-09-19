@@ -21,7 +21,7 @@ process rsem {
     task.ext.when == null || task.ext.when
 
     script:
-    def op = meta.singleEnd? : "--paired-end"
+    def op = meta.singleEnd ? "" : "--paired-end"
 
     """
     echo \$(rsem-calculate-expression --version 2>&1) > versions.txt
