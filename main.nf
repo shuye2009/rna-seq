@@ -9,7 +9,7 @@
 */
 if(params.SRAids){
   chRawReads   = Channel
-              .fromSRA( params.SRAids, apiKey: params.ncbi_api_key )
+              .fromSRA( params.SRAids, apiKey: params.ncbi_api_key, protocol: https )
               .map { row ->
                   def meta = [:]
                     meta.id = row[0]
