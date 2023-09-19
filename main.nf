@@ -8,7 +8,7 @@
 ==========================
 */
 chSRA       = Channel
-            .fromSRA(params.SRAids)
+            .fromSRA(params.SRAids, apiKey: '87c0b4a72fab79b49d75f86df4cd410fce09')
             .map { row ->
                 def meta = [:]
                    meta.id = row[0]
