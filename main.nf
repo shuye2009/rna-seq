@@ -8,18 +8,7 @@
 ==========================
 */
 chSRA       = Channel
-            .fromSRA(params.SRAids, apiKey: '87c0b4a72fab79b49d75f86df4cd410fce09')
-            .map { row ->
-                def meta = [:]
-                   meta.id = row[0]
-                   if (params.singleEnd) {
-                     meta.singleEnd = true
-                     return [meta, [row[1][0]]]
-                   }else{
-                     meta.singleEnd = false
-                     return [meta, [row[1][0], row[1][1]]]
-                   }
-            }
+            .fromSRA( [ 'SRP327319' ], apiKey: params.ncbi_api_key )
             .view()
 
 chRawReads  = Channel
