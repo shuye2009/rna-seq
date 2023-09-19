@@ -115,7 +115,8 @@ workflow {
     trimGalore(chRawReads)
     chTrimmed = trimGalore.out.fastq 
     starAlign(chTrimmed, chStarIndex, chGtf)
-    rsem(starAlign.out.transcriptsBam)
+    chTxBam = starAlign.out.transcriptsBam
+    rsem(chTxBam)
    // deseq2Analysis(rsemQuantification.out.results, params.conditions)
 }
 
