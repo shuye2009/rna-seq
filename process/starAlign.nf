@@ -46,7 +46,7 @@ process starAlign {
 	--outFilterMismatchNmax 2 \
 	--quantMode GeneCounts TranscriptomeSAM \
 	--twopassMode Basic \
-	--limitIObufferSize 50000000 \
+	--limitIObufferSize 30000000, 50000000 \
   --limitSjdbInsertNsj 1000000 \
 	--limitBAMsortRAM 10000000000 \
   --outTmpDir "${params.tmpDir}/star_\$(date +%d%s%S%N)"  \
