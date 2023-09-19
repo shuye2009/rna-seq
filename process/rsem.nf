@@ -1,14 +1,20 @@
+/*
+ * Count reads per gene and per isoform using RSEM
+ */
+
+
 process rsem {
     tag "$meta.id"
     label 'rsem'
     label 'medCpu'
     label 'highMem'
+
     input:
     tuple val(meta), path(txBam)
 
     output:
-    path "${meta.id}.genes.results", emit: geneResults
-    path "${meta.id}.isoforms.results", emit: isoformResults
+    tuple val(meta), path "*.genes.results", emit: geneResults
+    tuple val(meta), path "*.isoforms.results", emit: isoformResults
     path ("versions.txt"), emit: versions
 
     script:
