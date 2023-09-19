@@ -14,19 +14,20 @@ process starAlign {
   val gtf
 
   output:
-  tuple val(meta), path('*_Aligned.out.bam'), emit: bam
-  path ("*_out"), emit: logs
+  tuple val(meta), path('*Aligned.out.bam'), emit: bam
+  path ("*out"), emit: logs
   path ("versions.txt"), emit: versions
-  tuple val(meta), path("*_ReadsPerGene.out.tab"), optional: true, emit: counts
-  path("*_out.tab"), optional: true, emit: countsLogs
-  tuple val(meta), path("*_Aligned.toTranscriptome.out.bam"), optional: false, emit: transcriptsBam
+  tuple val(meta), path("*ReadsPerGene.out.tab"), optional: true, emit: counts
+  path("*out.tab"), optional: true, emit: countsLogs
+  tuple val(meta), path("*Aligned.toTranscriptome.out.bam"), optional: false, emit: transcriptsBam
 
   when:
   task.ext.when == null || task.ext.when
 
   script:
   def args = task.ext.args ?: ''
-  def prefix = task.ext.prefix ?: "${meta.id}_"
+  def prefix = "${meta.id}_"
+  
 
   """
   rm -rf "${params.tmpDir}/*"
