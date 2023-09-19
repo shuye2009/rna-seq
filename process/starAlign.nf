@@ -29,6 +29,7 @@ process starAlign {
   def prefix = task.ext.prefix ?: "${meta.id}"
   def gtfOpts = gtf.size() > 0 ? "--sjdbGTFfile ${gtf}" : ""
   """
+  rm -rf "${params.tmpDir}/*"
   echo "STAR "\$(STAR --version 2>&1) > versions.txt
   STAR --genomeDir $index \\
        --readFilesIn $reads  \\
