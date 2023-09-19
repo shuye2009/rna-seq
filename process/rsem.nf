@@ -1,27 +1,31 @@
 process rsem {
+    tag "$meta.id"
+    label 'rsem'
+    label 'medCpu'
+    label 'extraMem'
     input:
-    tuple val(sample_id), path(bam_file) from starAlignment.out.bam
+    tuple val(meta), path(transcriptsBam)
 
     output:
-    path "${sample_id}.results", emit: results
+    path "${meta.id}.results", emit: results
 
     script:
     """
-    rsem-calculate-expression --bam \
-      --no-bam-output \
-      --paired-end \
-      $bam_file \
-      $params.rsemRef \
-      ${sample_id}
-    """
+    if [ $meta.singleEnd ]; then 
+        op="-p 10"
+    else 
+        op="-p 10 --paired-end" 
+    fi
 
-    rsem-calculate-expression $op \
+    rsem-calculate-expression \$op \
 			--alignments \
 			--estimate-rspd \
 			--append-names \
 			--no-bam-output \
-			--strandedness $stranded \
-			Aligned.toTranscriptome.out.bam \
+			--strandedness $params.stranded \
+			$transcriptsBam\
 			$params.rsemRef \
-			rsem_out/$prefix 
+			$meta.id 
+
+    """
 }
