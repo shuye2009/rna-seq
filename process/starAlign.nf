@@ -14,12 +14,12 @@ process starAlign {
   val gtf
 
   output:
-  tuple val(meta), path('*Aligned.out.bam'), emit: bam
-  path ("*out"), emit: logs
+  tuple val(meta), path('*_Aligned.out.bam'), emit: bam
+  path ("*_out"), emit: logs
   path ("versions.txt"), emit: versions
-  tuple val(meta), path("*ReadsPerGene.out.tab"), optional: true, emit: counts
-  path("*out.tab"), optional: true, emit: countsLogs
-  tuple val(meta), path("*Aligned.toTranscriptome.out.bam"), optional: false, emit: transcriptsBam
+  tuple val(meta), path("*_ReadsPerGene.out.tab"), optional: true, emit: counts
+  path("*_out.tab"), optional: true, emit: countsLogs
+  tuple val(meta), path("*_Aligned.toTranscriptome.out.bam"), optional: false, emit: transcriptsBam
 
   when:
   task.ext.when == null || task.ext.when
@@ -27,22 +27,30 @@ process starAlign {
   script:
   def args = task.ext.args ?: ''
   def prefix = task.ext.prefix ?: "${meta.id}"
-  def gtfOpts = gtf.size() > 0 ? "--sjdbGTFfile ${gtf}" : ""
+
   """
   rm -rf "${params.tmpDir}/*"
   echo "STAR "\$(STAR --version 2>&1) > versions.txt
-  STAR --genomeDir $index \\
-       --readFilesIn $reads  \\
-       --runThreadN ${task.cpus} \\
-       --runMode alignReads \\
-       --outSAMtype BAM Unsorted  \\
-       --readFilesCommand zcat \\
-       --outTmpDir "${params.tmpDir}/star_\$(date +%d%s%S%N)" \\
-       --runDirPerm All_RWX \\
-       --outFileNamePrefix $meta.id  \\
-       --outSAMattrRGline ID:$meta.id SM:$meta.id LB:Illumina PL:Illumina  \\
-       --outSAMunmapped Within \\
-       ${gtfOpts} \\
-       ${args}
+  STAR	--runThreadN ${task.cpus} \
+	--runMode alignReads \
+	--genomeDir $index \
+	--sjdbGTFfile $gtf \
+	--sjdbOverhang 100 \
+	--sjdbGTFfeatureExon exon \
+	--sjdbGTFtagExonParentTranscript transcript_id \
+	--sjdbGTFtagExonParentGene gene_id \
+	--readFilesIn $reads \
+	--readFilesCommand zcat \
+	--outFileNamePrefix $prefix \
+	--outSAMtype BAM SortedByCoordinate \
+	--outFilterMismatchNmax 2 \
+	--quantMode GeneCounts TranscriptomeSAM \
+	--twopassMode Basic \
+	--limitIObufferSize 50000000 \
+  --limitSjdbInsertNsj 1000000 \
+	--limitBAMsortRAM 10000000000 \
+  --outTmpDir "${params.tmpDir}/star_\$(date +%d%s%S%N)"  \
+  ${args}
+
   """
 }
