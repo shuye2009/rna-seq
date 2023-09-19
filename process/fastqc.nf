@@ -8,7 +8,7 @@ process fastqc {
   label 'medCpu'
   label 'lowMem'
 
-  publishDir "$launchDir/results", mode: 'copy'
+  //publishDir "$launchDir/results", mode: 'copy'
 
   input:
   tuple val(meta), path(reads)

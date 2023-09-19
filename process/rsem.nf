@@ -32,7 +32,7 @@ process rsem {
 			--append-names \
 			--no-bam-output \
 			--strandedness $params.stranded \
-			$txBam\
+			$txBam \
 			$params.rsemRef \
 			$meta.id \
             $op \
