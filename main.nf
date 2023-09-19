@@ -10,6 +10,17 @@
 if(params.SRAids){
   chRawReads   = Channel
               .fromSRA( params.SRAids, apiKey: params.ncbi_api_key )
+              .map { row ->
+                  def meta = [:]
+                    meta.id = row[0]
+                    if (params.singleEnd) {
+                      meta.singleEnd = true
+                      return [meta, [row[1]]]
+                    }else{
+                      meta.singleEnd = false
+                      return [meta, [row[1][0], row[1][1]]]
+                    }
+              }
               .view()
 } else if(params.reads){
   chRawReads  = Channel
@@ -20,7 +31,7 @@ if(params.SRAids){
                     meta.id = row[0]
                     if (params.singleEnd) {
                       meta.singleEnd = true
-                      return [meta, [row[1][0]]]
+                      return [meta, [row[1]]]
                     }else{
                       meta.singleEnd = false
                       return [meta, [row[1][0], row[1][1]]]
