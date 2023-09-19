@@ -38,7 +38,8 @@ chGtf       = Channel
 */
 include { fastqc }          from './process/fastqc'
 include { starAlign }       from './process/starAlign'
-include { trimGalore }       from './process/trimGalore'
+include { trimGalore }      from './process/trimGalore'
+include { rsem }            from './process/rsem'
 
 /*
 
@@ -114,7 +115,7 @@ workflow {
     trimGalore(chRawReads)
     chTrimmed = trimGalore.out.fastq 
     starAlign(chTrimmed, chStarIndex, chGtf)
-   // rsem(starAlign.out.transcriptsBam)
+    rsem(starAlign.out.transcriptsBam)
    // deseq2Analysis(rsemQuantification.out.results, params.conditions)
 }
 
