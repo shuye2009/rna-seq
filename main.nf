@@ -7,7 +7,20 @@
  BUILD CHANNELS
 ==========================
 */
-
+chSRA       = Channel
+            .fromSRA(params.SRAids)
+            .map { row ->
+                def meta = [:]
+                   meta.id = row[0]
+                   if (params.singleEnd) {
+                     meta.singleEnd = true
+                     return [meta, [row[1][0]]]
+                   }else{
+                     meta.singleEnd = false
+                     return [meta, [row[1][0], row[1][1]]]
+                   }
+            }
+            .view()
 chRawReads  = Channel
             .fromFilePairs(params.reads, size: params.singleEnd ? 1 : 2)
             .ifEmpty { "Cannot find any reads matching: ${params.reads}\nNB: Path needs to be enclosed in quotes!\nNB: Path requires at least one * wildcard!\nIf this is single-end data, please specify --singleEnd on the command line." }
