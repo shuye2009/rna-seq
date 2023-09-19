@@ -14,7 +14,7 @@ process starAlign {
   val gtf
 
   output:
-  tuple val(meta), path('*Aligned.out.bam'), emit: bam
+  tuple val(meta), path('*Aligned.sortedByCoord.out.bam'), emit: bam
   path ("*out"), emit: logs
   path ("versions.txt"), emit: versions
   tuple val(meta), path("*ReadsPerGene.out.tab"), optional: true, emit: counts
@@ -26,7 +26,7 @@ process starAlign {
 
   script:
   def args = task.ext.args ?: ''
-  def prefix = task.ext.prefix ?: "${meta.id}"
+  def prefix = task.ext.prefix ?: "${meta.id}_"
   
 
   """
