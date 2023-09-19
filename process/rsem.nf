@@ -13,8 +13,8 @@ process rsem {
     tuple val(meta), path(txBam)
 
     output:
-    tuple val(meta), path "*.genes.results", emit: geneResults
-    tuple val(meta), path "*.isoforms.results", emit: isoformResults
+    tuple val(meta), path("*.genes.results"), emit: geneResults
+    tuple val(meta), path("*.isoforms.results"), emit: isoformResults
     path ("versions.txt"), emit: versions
 
     script:
