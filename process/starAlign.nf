@@ -26,7 +26,7 @@ process starAlign {
 
   script:
   def args = task.ext.args ?: ''
-  def prefix = task.ext.prefix ?: "${meta.id}_"
+  def prefix = task.ext.prefix ?: "${meta.id}"
   
 
   """
