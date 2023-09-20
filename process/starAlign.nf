@@ -53,7 +53,7 @@ process starAlign {
 	--twopassMode Basic \
   --limitOutSJoneRead 2000 \
   --limitOutSJcollapsed 3000000 \
-	--limitIObufferSize 30000000, 50000000 \
+	--limitIObufferSize 300000000, 500000000 \
   --limitSjdbInsertNsj 3000000 \
 	--limitBAMsortRAM 10000000000 \
   --outTmpDir "${params.tmpDir}/star_\$(date +%d%s%S%N)"  \
