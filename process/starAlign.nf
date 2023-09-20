@@ -47,7 +47,7 @@ process starAlign {
 	--readFilesIn $reads \
 	--readFilesCommand zcat \
 	--outFileNamePrefix $prefix \
-	--outSAMtype BAM \
+	--outSAMtype BAM Unsorted\
 	--outFilterMismatchNmax 2 \
 	--quantMode GeneCounts TranscriptomeSAM \
 	--twopassMode Basic \
