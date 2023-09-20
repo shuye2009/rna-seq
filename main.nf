@@ -15,7 +15,7 @@ if(params.SRAids){
                     meta.id = row[0]
                     if (params.singleEnd) {
                       meta.singleEnd = true
-                      return [meta, [row[1]]]
+                      return [meta, row[1]]
                     }else{
                       meta.singleEnd = false
                       return [meta, [row[1][0], row[1][1]]]
@@ -31,7 +31,7 @@ if(params.SRAids){
                     meta.id = row[0]
                     if (params.singleEnd) {
                       meta.singleEnd = true
-                      return [meta, [row[1]]]
+                      return [meta, row[1]]
                     }else{
                       meta.singleEnd = false
                       return [meta, [row[1][0], row[1][1]]]
