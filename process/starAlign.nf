@@ -14,7 +14,7 @@ process starAlign {
   val gtf
 
   output:
-  tuple val(meta), path('*Aligned.sortedByCoord.out.bam'), emit: bam
+  tuple val(meta), path('*Aligned.out.bam'), emit: bam
   path ("*out"), emit: logs
   path ("versions.txt"), emit: versions
   tuple val(meta), path("*ReadsPerGene.out.tab"), optional: true, emit: counts
@@ -47,12 +47,14 @@ process starAlign {
 	--readFilesIn $reads \
 	--readFilesCommand zcat \
 	--outFileNamePrefix $prefix \
-	--outSAMtype BAM SortedByCoordinate \
+	--outSAMtype BAM \
 	--outFilterMismatchNmax 2 \
 	--quantMode GeneCounts TranscriptomeSAM \
 	--twopassMode Basic \
+  --limitOutSJoneRead 2000 \
+  --limitOutSJcollapsed 3000000 \
 	--limitIObufferSize 30000000, 50000000 \
-  --limitSjdbInsertNsj 1000000 \
+  --limitSjdbInsertNsj 3000000 \
 	--limitBAMsortRAM 10000000000 \
   --outTmpDir "${params.tmpDir}/star_\$(date +%d%s%S%N)"  \
   ${args}
