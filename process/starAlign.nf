@@ -30,8 +30,12 @@ process starAlign {
   
 
   """
-  rm -rf "${params.tmpDir}/*"
+  if [ -e ${params.tmpDir}/star_\$(date +%d%s%S%N) ]; then
+    rm -rf "${params.tmpDir}/star_\$(date +%d%s%S%N)"
+  fi
+  
   echo "STAR "\$(STAR --version 2>&1) > versions.txt
+  
   STAR	--runThreadN ${task.cpus} \
 	--runMode alignReads \
 	--genomeDir $index \
